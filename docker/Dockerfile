@@ -17,8 +17,6 @@ RUN \
         php-xml \
         php-xdebug && \
     mkdir -p /usr/local/etc/php && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y phpmyadmin && \
-    ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-enabled/phpmyadmin.conf && \
     rm -rf /var/lib/apt/lists/*
 
 ENV LANG en_US.UTF-8

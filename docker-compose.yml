@@ -4,17 +4,25 @@ services:
   lamp:
     image: trypton/lamp
     depends_on:
-      - mysql
+      - db
     volumes:
       - ${WEB_FOLDER}:/var/www
     ports:
-      - "8080:80"
+      - 8080:80
     restart: always
 
-  mysql:
-    image: mysql
+  db:
+    image: mysql:5.7
     volumes:
       - ./data/mysql:/var/lib/mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      environment:
+        - PMA_HOST=db
+      restart: always
+      ports:
+        - 8000:80
