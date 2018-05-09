@@ -19,10 +19,7 @@ RUN \
     mkdir -p /usr/local/etc/php && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y phpmyadmin && \
     ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-enabled/phpmyadmin.conf && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server && \
-    rm -rf /var/lib/apt/lists/* && \
-    mkdir -p /var/run/mysqld && \
-    chown -R mysql:mysql /var/run/mysqld
+    rm -rf /var/lib/apt/lists/*
 
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
@@ -33,7 +30,6 @@ ADD apache/default.conf /etc/apache2/sites-enabled/000-default.conf
 ADD php/php.ini /usr/local/etc/php/php.ini
 
 VOLUME "/var/www"
-VOLUME "/var/lib/mysql"
 
 ADD entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod u+x /usr/local/bin/docker-entrypoint

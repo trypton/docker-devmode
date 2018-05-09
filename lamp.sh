@@ -4,37 +4,33 @@ if [ -e ".env" ]; then
     source .env
 fi;
 
-if [ -e "./.env" ]; then
-    source ./.env
-fi;
-
-DOCKER_IMAGE=trypton/lamp
+IMAGE_NAME=trypton/lamp
+CONTAINER_RE="\s${CONTAINER_NAME}\b"
 
 case "$1" in
     'build')
-        if [ "$(docker ps | grep $DOCKER_NAME)" ]; then
-            docker stop $DOCKER_NAME
+        if [ "$(docker ps | grep $CONTAINER_RE)" ]; then
+            docker stop $CONTAINER_NAME
         fi;
-        if [ "$(docker ps -a | grep $DOCKER_NAME)" ]; then
-            docker rm $DOCKER_NAME
+        if [ "$(docker ps -a | grep $CONTAINER_RE)" ]; then
+            docker rm $CONTAINER_NAME
         fi;
-        docker build -t $DOCKER_IMAGE ./docker/
+        docker build -t $IMAGE_NAME ./docker/
         exit $? ;;
     'start')
-        if [ ! "$(docker ps -a | grep $DOCKER_NAME)" ]; then
+        if [ ! "$(docker ps -a | grep $CONTAINER_RE)" ]; then
             docker run -d -p 8080:80 \
-                --name $DOCKER_NAME \
-                -v ${PWD}${WEB_FOLDER}:/var/www \
-                -v ${PWD}/data/mysql:/var/lib/mysql \
-                $DOCKER_IMAGE
+                --name $CONTAINER_NAME \
+                -v ${PWD}/${WEB_FOLDER}:/var/www \
+                $IMAGE_NAME
         else
-            docker start $DOCKER_NAME
+            docker start $CONTAINER_NAME
         fi;
         exit $? ;;
     'stop')
-        docker stop $DOCKER_NAME
+        docker stop $CONTAINER_NAME
         exit $? ;;
     'login')
-        docker exec -it $DOCKER_NAME bash
+        docker exec -it $CONTAINER_NAME bash
         exit $? ;;
 esac

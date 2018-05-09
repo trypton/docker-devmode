@@ -1,0 +1,20 @@
+version: '3.3'
+
+services:
+  lamp:
+    image: trypton/lamp
+    depends_on:
+      - mysql
+    volumes:
+      - ${WEB_FOLDER}:/var/www
+    ports:
+      - "8080:80"
+    restart: always
+
+  mysql:
+    image: mysql
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
