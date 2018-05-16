@@ -1,15 +1,17 @@
 version: '3.3'
 
 services:
-  lamp:
-    image: trypton/lamp
-    depends_on:
-      - db
+  web:
+    build: ${IMAGE_NAME}
+    image: ${DOCKER_NAME}/${IMAGE_NAME}
+    container_name: ${CONTAINER_NAME}
     volumes:
       - ${WEB_FOLDER}:/var/www
     ports:
       - 8080:80
     restart: always
+    environment:
+      APACHE_DOCUMENT_ROOT: ${WEB_ROOT}
 
   db:
     image: mysql:5.7
@@ -20,9 +22,11 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
 
   phpmyadmin:
-      image: phpmyadmin/phpmyadmin
-      environment:
-        - PMA_HOST=db
-      restart: always
-      ports:
-        - 8000:80
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=db
+    restart: always
+    ports:
+      - 8081:80
+    depends_on:
+      - db
