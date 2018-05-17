@@ -24,6 +24,3 @@ ADD apache/default.conf /etc/apache2/sites-enabled/000-default.conf
 ADD php/php.ini /usr/local/etc/php/php.ini
 
 VOLUME /var/www
-
-EXPOSE 80
-CMD ["apache2-foreground"]

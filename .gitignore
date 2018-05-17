@@ -1,4 +1,5 @@
 .vscode
 data/
+server/
 www/
 .env

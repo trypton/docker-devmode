@@ -4,7 +4,7 @@ services:
   web:
     build: ${IMAGE_NAME}
     image: ${DOCKER_NAME}/${IMAGE_NAME}
-    container_name: ${CONTAINER_NAME}
+    container_name: ${CONTAINER_NAME}-apache
     volumes:
       - ${WEB_FOLDER}:/var/www
     ports:
@@ -13,8 +13,18 @@ services:
     environment:
       APACHE_DOCUMENT_ROOT: ${WEB_ROOT}
 
+  node:
+    build: nodejs
+    image: ${DOCKER_NAME}/nodejs
+    container_name: ${CONTAINER_NAME}-nodejs
+    volumes:
+      - ${NODEJS_FOLDER}:/usr/src/app
+    ports:
+      - 8082:8080
+
   db:
     image: mysql:5.7
+    container_name: ${CONTAINER_NAME}-mysql
     volumes:
       - ./data/mysql:/var/lib/mysql
     restart: always
@@ -23,6 +33,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    container_name: ${CONTAINER_NAME}-phpmyadmin
     environment:
       - PMA_HOST=db
     restart: always

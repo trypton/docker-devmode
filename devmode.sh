@@ -4,7 +4,7 @@ if [ -e ".env" ]; then
     source .env
 fi;
 
-case "$1" in
+case "$@" in
     'build')
         docker-compose build
         exit $? ;;
@@ -15,6 +15,9 @@ case "$1" in
         docker-compose down
         exit $? ;;
     'login')
-        docker exec -it $CONTAINER_NAME bash
+        docker exec -it $CONTAINER_NAME-apache bash
+        exit $? ;;
+    'login node')
+        docker exec -it $CONTAINER_NAME-node bash
         exit $? ;;
 esac
