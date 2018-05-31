@@ -8,10 +8,10 @@ case "$@" in
     'build')
         docker-compose build
         exit $? ;;
-    'start')
+    'up')
         docker-compose up -d
         exit $? ;;
-    'stop')
+    'down')
         docker-compose down
         exit $? ;;
     'login')
