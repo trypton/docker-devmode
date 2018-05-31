@@ -20,7 +20,11 @@ RUN set -ex; \
 
 RUN a2enmod rewrite
 
+RUN echo "xdebug.remote_enable = 1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "xdebug.remote_autostart = 1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "xdebug.remote_host = \${XDEBUG_REMOTE_HOST}" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
 ADD apache/default.conf /etc/apache2/sites-enabled/000-default.conf
-ADD php/php.ini /usr/local/etc/php/php.ini
+ADD php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
 VOLUME /var/www

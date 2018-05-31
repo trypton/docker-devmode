@@ -12,6 +12,7 @@ services:
     restart: always
     environment:
       APACHE_DOCUMENT_ROOT: ${WEB_ROOT}
+      XDEBUG_REMOTE_HOST: ${XDEBUG_REMOTE_HOST}
 
   node:
     build: nodejs
