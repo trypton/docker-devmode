@@ -19,12 +19,22 @@ RUN set -ex; \
     rm -rf /var/lib/apt/lists/*
 
 RUN a2enmod rewrite
+RUN a2enmod ssl
+RUN a2enmod headers
+RUN a2ensite 000-default
+RUN a2ensite default-ssl
 
 RUN echo "xdebug.remote_enable = 1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 RUN echo "xdebug.remote_autostart = 1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 RUN echo "xdebug.remote_host = \${XDEBUG_REMOTE_HOST}" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
-ADD apache/default.conf /etc/apache2/sites-enabled/000-default.conf
+ADD apache/default.conf /etc/apache2/sites-available/000-default.conf
+ADD apache/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
 ADD php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
+ADD ssl/localhost.crt /etc/ssl/certs/localhost.crt
+ADD ssl/localhost.key /etc/ssl/private/localhost.key
+
 VOLUME /var/www
+
+EXPOSE 443
