@@ -18,6 +18,6 @@ case "$@" in
         docker exec -it $CONTAINER_NAME-apache bash
         exit $? ;;
     'login node')
-        docker exec -it $CONTAINER_NAME-node bash
+        docker exec -it $CONTAINER_NAME-nodejs bash
         exit $? ;;
 esac
