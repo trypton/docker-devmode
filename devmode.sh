@@ -20,4 +20,7 @@ case "$@" in
     'login node')
         docker exec -it $CONTAINER_NAME-nodejs bash
         exit $? ;;
+    'alias')
+        sudo ifconfig lo0 alias 10.254.254.254
+        exit $? ;;
 esac
