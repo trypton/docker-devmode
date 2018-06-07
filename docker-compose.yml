@@ -2,8 +2,10 @@ version: '3.3'
 
 services:
   web:
-    build: ${IMAGE_NAME}
-    image: ${DOCKER_NAME}/${IMAGE_NAME}
+    build:
+      context: .
+      dockerfile: Dockerfile-php${PHP_VER}
+    image: ${DOCKER_NAME}/apache-php${PHP_VER}
     container_name: ${CONTAINER_NAME}-apache
     volumes:
       - ${WEB_FOLDER}:/var/www
@@ -16,7 +18,9 @@ services:
       XDEBUG_REMOTE_HOST: ${XDEBUG_REMOTE_HOST}
 
   node:
-    build: nodejs
+    build:
+      context: .
+      dockerfile: Dockerfile-nodejs
     image: ${DOCKER_NAME}/nodejs
     container_name: ${CONTAINER_NAME}-nodejs
     volumes:

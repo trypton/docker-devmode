@@ -1,4 +1,4 @@
-FROM php:7.2-apache
+FROM php:5.6-apache
 
 RUN set -ex; \
     apt-get update; \
@@ -11,7 +11,7 @@ RUN set -ex; \
         libxml2-dev \
     ; \
     \
-    pecl install memcached-3.0.4 xdebug-2.6.0; \
+    pecl install memcached-2.2.0 xdebug-2.5.5; \
     docker-php-ext-enable memcached xdebug; \
     docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr --with-freetype-dir=/usr; \
     docker-php-ext-install pdo pdo_mysql mysqli gd intl soap; \
@@ -19,22 +19,12 @@ RUN set -ex; \
     rm -rf /var/lib/apt/lists/*
 
 RUN a2enmod rewrite
-RUN a2enmod ssl
-RUN a2enmod headers
-RUN a2ensite 000-default
-RUN a2ensite default-ssl
 
 RUN echo "xdebug.remote_enable = 1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 RUN echo "xdebug.remote_autostart = 1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 RUN echo "xdebug.remote_host = \${XDEBUG_REMOTE_HOST}" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
-ADD apache/default.conf /etc/apache2/sites-available/000-default.conf
-ADD apache/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
-ADD php/custom.ini /usr/local/etc/php/conf.d/custom.ini
-
-ADD ssl/localhost.crt /etc/ssl/certs/localhost.crt
-ADD ssl/localhost.key /etc/ssl/private/localhost.key
+COPY apache/default.conf /etc/apache2/sites-enabled/000-default.conf
+COPY php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
 VOLUME /var/www
-
-EXPOSE 443
